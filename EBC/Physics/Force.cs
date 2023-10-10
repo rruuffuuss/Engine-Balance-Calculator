@@ -86,6 +86,10 @@ namespace EBC.Physics
             if ((NewProperty == Property.Dir || NewProperty == Property.Mag) &&
                 (direction != Single.NaN && magnitude != Single.NaN))
             {
+
+                if (direction < 0f) direction += 360f;
+                else if (direction > 360f) direction += -360f;
+
                 xcomponent = magnitude * MathF.Cos(direction * (MathF.Tau / 360f));
                 ycomponent = magnitude * MathF.Sin(direction * (MathF.Tau / 360f));
             }
