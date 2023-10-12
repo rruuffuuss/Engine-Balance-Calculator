@@ -30,13 +30,13 @@ namespace EBC.Engine_Components
             float jVertSqr = jVert * jVert; //b^2cos^2(x)
 
             //cramk journal horizontal displacement
-            float jHorz = (_crankSlice.Throw * MathF.Sin(pos) - c);
+            float jHorz = (_crankSlice.Throw * MathF.Sin(pos) - _piston.Offset);
             float jHorzSqr = jHorz * jHorz;
 
             float magnitude = (_piston.Mass + _conRod.Mass * (_conRod.COMLength / _conRod.Length)) *
                 (
                 -jVertSqr / MathF.Sqrt(asqr - jHorzSqr)
-                - (jVertSqr * jHorzSqr) / MathF.Pow(asqr = jHorzSqr, 2f / 3f)
+                - (jVertSqr * jHorzSqr) / MathF.Pow(asqr - jHorzSqr, 2f / 3f)
                 + ((jHorz + _piston.Offset) * jHorz) / MathF.Sqrt(asqr - jHorzSqr)
                 - jVert
                 );
