@@ -10,7 +10,7 @@ namespace EBC.Engine_Components
     {
         public float Mass { get; private set; }
         public float Length { get; private set; }
-        public float LengthSqrd { get; private set; }
+        //public float LengthSqrd { get; private set; }
         /// <summary>
         /// distance (from crank end) at which COM occurs
         /// </summary>
@@ -19,7 +19,7 @@ namespace EBC.Engine_Components
         {
             Mass = mass;
             Length = length;
-            LengthSqrd = length * length;
+            //LengthSqrd = length * length;
             COMLength = comLength;
         }
     }
