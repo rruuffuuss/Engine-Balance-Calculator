@@ -9,18 +9,18 @@ namespace EBC.Engine_Components
     internal struct CrankSlice
     {
         public float Mass {  get; private set; }
-        public float Length { get; private set; }
-        public float LengthSqrd { get; private set; }
+        public float Throw { get; private set; }
+        //public float ThrowSqrd { get; private set; }
         /// <summary>
         /// distance (from crank end) at which COM occurs
         /// </summary>
         public float COMLength { get; private set; }
 
-        public CrankSlice (float mass, float length, float comLength)
+        public CrankSlice (float mass, float _throw, float comLength)
         {
             Mass = mass;
-            Length = length;
-            LengthSqrd = length * length;
+            Throw = _throw;
+            //ThrowSqrd = _throw * _throw;
             COMLength = comLength;
         }
         
