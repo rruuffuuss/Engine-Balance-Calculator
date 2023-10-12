@@ -9,10 +9,12 @@ namespace EBC.Engine_Components
     internal struct Piston
     {
         public float Mass { get; private set; }
+        public float Offset { get; private set; }
 
-        public Piston(float mass)
+        public Piston(float mass, float offset)
         {
             Mass = mass;
+            Offset = offset;
         }
     }
 }
