@@ -101,7 +101,7 @@ namespace EBC.Physics
             }
         }
 
-        static Force AddForces(Force F1, Force F2)
+        public static Force AddForces(Force F1, Force F2)
         {
             return new Force(_xcomponent:F1.XComponent + F2.XComponent, _ycomponent:F1.YComponent + F2.YComponent);
         }
