@@ -6,16 +6,8 @@ using System.Threading.Tasks;
 
 namespace EBC.Physics
 {
-    internal struct Force
+    internal class Force
     {
-        enum Property
-        {
-            Dir,
-            Mag,
-            XComp,
-            YComp
-        }
-
         private float direction;
         /// <summary>
         /// Direction in degrees clockwise from vertical (crank rotation)
@@ -26,7 +18,7 @@ namespace EBC.Physics
             set
             {
                 direction = value;
-                Normalise(Property.Dir);
+                Normalise(false);
             }
         }
         private float magnitude;
@@ -36,7 +28,7 @@ namespace EBC.Physics
             set
             {
                 magnitude = value;
-                Normalise(Property.Mag);
+                Normalise(false);
             }
         }
         private float xcomponent;
@@ -46,7 +38,7 @@ namespace EBC.Physics
             set
             {
                 xcomponent = value;
-                Normalise(Property.XComp);
+                Normalise(true);
             }
         }
         private float ycomponent;
@@ -56,54 +48,55 @@ namespace EBC.Physics
             set
             {
                 ycomponent = value;
-                Normalise(Property.YComp);
+                Normalise(true);
             }
         }
 
-        public Force(
-            float _direction = Single.NaN,
-            float _magnitude = Single.NaN,
-            float _xcomponent = Single.NaN,
-            float _ycomponent = Single.NaN)
+        public static Force NewForcebyPolar(float _direction, float _magnitude)
         {
-            direction = _direction;
-            magnitude = _magnitude;
-            xcomponent = _xcomponent;
-            ycomponent = _ycomponent;
+            return new Force(_direction, _magnitude, false);
+        }
+        
+        public static Force NewForcebyCartesian( float _xcomponent, float _ycomponent)
+        {
+            return new Force(_xcomponent, _ycomponent, true);
+        }
 
-            if (direction != Single.NaN)
+        private Force (float a, float b, bool fromCartesian)
+        {
+            if(fromCartesian = true)
             {
-                Normalise(Property.Dir);
+                xcomponent = a; ycomponent = b;
+                Normalise(true);
             }
-            else if (xcomponent != Single.NaN)
+            else
             {
-                Normalise(Property.XComp);
+                direction = a; magnitude = b;
+                Normalise(false);
             }
         }
 
-        private void Normalise(Property NewProperty)
+        private void Normalise(bool fromCartesian)
         {
-            if ((NewProperty == Property.Dir || NewProperty == Property.Mag) &&
-                (direction != Single.NaN && magnitude != Single.NaN))
-            {
 
+            if (fromCartesian)
+            {
+                magnitude = MathF.Sqrt(ycomponent * ycomponent + xcomponent * xcomponent);
+                direction = MathF.Atan(xcomponent / ycomponent) * (360f / MathF.Tau);
+            }
+            else
+            {
                 if (direction < 0f) direction += 360f;
                 else if (direction > 360f) direction += -360f;
 
                 xcomponent = magnitude * MathF.Cos(direction * (MathF.Tau / 360f));
                 ycomponent = magnitude * MathF.Sin(direction * (MathF.Tau / 360f));
             }
-            if ((NewProperty == Property.XComp || NewProperty == Property.YComp) &&
-                (xcomponent != Single.NaN && ycomponent != Single.NaN))
-            {
-                magnitude = MathF.Sqrt(ycomponent * ycomponent + xcomponent * xcomponent);
-                direction = MathF.Atan(xcomponent / ycomponent) * (360f / MathF.Tau);
-            }
         }
 
         public static Force AddForces(Force F1, Force F2)
         {
-            return new Force(_xcomponent:F1.XComponent + F2.XComponent, _ycomponent:F1.YComponent + F2.YComponent);
+            return NewForcebyCartesian(_xcomponent:F1.XComponent + F2.XComponent, _ycomponent:F1.YComponent + F2.YComponent);
         }
     }
 
