@@ -15,7 +15,11 @@ namespace EBC.Engine_Components
 
         public Engine(string EngineFile)
         {
-            XmlTextReader engineXml = new XmlTextReader("Engine Designs\\3.6 VR6 24v FSI (EA390).xml");
+            XmlDocument engineXml = new XmlDocument();
+            engineXml.Load("Engine Designs\\3.6 VR6 24v FSI (EA390).xml"));
+
+            PistonAssembly pistonAssembly = new PistonAssembly(engineXml);
+            
 
         }
 

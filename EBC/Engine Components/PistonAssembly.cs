@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace EBC.Engine_Components
 {
@@ -17,6 +18,24 @@ namespace EBC.Engine_Components
         public Force PrimaryForce { get; private set; }
         public Force SecondaryForce { get; private set; }
         public Force CrankForces { get; private set; }
+
+        public PistonAssembly (XmlDocument engineXml)
+        {
+            string pistonPath = "Engine/pistonAssembly/piston/";
+            _piston.Mass = Convert.ToSingle(engineXml.SelectSingleNode(pistonPath + "mass").InnerText);
+            _piston.Offset = Convert.ToSingle(engineXml.SelectSingleNode(pistonPath + "offset").InnerText);
+
+            string conRodPath = "Engine/pistonAssembly/conRod";
+            _conRod.Length = Convert.ToSingle(engineXml.SelectSingleNode(conRodPath + "length").InnerText);
+            _conRod.COMLength = Convert.ToSingle(engineXml.SelectSingleNode(conRodPath + "comLength").InnerText);
+            _conRod.Mass = Convert.ToSingle(engineXml.SelectSingleNode(conRodPath + "mass").InnerText);
+           
+            string crankSlicePath = "Engine/pistonAssembly/crankSlice";
+            _crankSlice.Throw = Convert.ToSingle(engineXml.SelectSingleNode(crankSlicePath + "throw").InnerText);
+            _crankSlice.Mass = Convert.ToSingle(engineXml.SelectSingleNode(crankSlicePath + "mass").InnerText);
+
+        }
+
 
         // the
         public Force ComputeReciprocatingForce(float crankRotationDeg, float tdcDeg, float angle)
