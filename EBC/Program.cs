@@ -11,7 +11,10 @@ while (true)
     Console.WriteLine("enter crank rotation");
     float rot = Convert.ToSingle(Console.ReadLine());
 
-    Force f = R36.ComputeReciprocatingForces(rot);
+    Console.WriteLine("enter engine speed");
+    float RPM = Convert.ToSingle(Console.ReadLine());
+
+    Force f = R36.ComputeReciprocatingForces(rot,RPM);
     Console.WriteLine("Mag: " + Convert.ToString(f.Magnitude));
     Console.WriteLine("Dir: " + Convert.ToString(f.Direction));
 }
