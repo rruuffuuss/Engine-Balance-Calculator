@@ -16,19 +16,29 @@ namespace EBC.Engine_Components
         public Engine(string EngineFile)
         {
             XmlDocument engineXml = new XmlDocument();
-            engineXml.Load("Engine Designs\\3.6 VR6 24v FSI (EA390).xml"));
+            engineXml.Load(EngineFile);
 
             PistonAssembly pistonAssembly = new PistonAssembly(engineXml);
+
+            XmlNodeList bankNodes = engineXml.SelectNodes("Engine/crank/bank");
+            banks = new Bank[bankNodes.Count];
+
+            for(int i = 0; i < banks.Length; i++)
+            {
+                banks[i] = new Bank(pistonAssembly, bankNodes[i]);
+            }
             
+
 
         }
 
-        public Force ComputeReciprocatingForces(float CrankRotation)
+        public Force ComputeReciprocatingForces(float CrankRotation, float RPM)
         {
-            Force totalForce = new Force();
+            Force totalForce = Force.NewForcebyCartesian(0f, 0f);
+            float angularVelocity = MathF.Tau * RPM;
             foreach(Bank bank in banks)
             {
-                totalForce = Force.AddForces(totalForce, bank.ComputeReciprocatingForces(CrankRotation));
+                totalForce = Force.AddForces(totalForce, bank.ComputeReciprocatingForces(CrankRotation, angularVelocity));
             }
             return totalForce;
         }

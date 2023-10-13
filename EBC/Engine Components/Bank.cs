@@ -11,14 +11,14 @@ namespace EBC.Engine_Components
     internal class Bank
     {
 
-        private struct cylinder
+        private struct Cylinder
         {
             public PistonAssembly pistonAssembly;          
             /*note the tdc variable is actually the angle at which the crank segment is parallel to the cylinder and popinting toward it
             in engines with cylinder offset, this is not top ddead center*/
             public float tdc;
 
-            public cylinder (PistonAssembly _pistonAssembly, float _tdc)
+            public Cylinder (PistonAssembly _pistonAssembly, float _tdc)
             {
                 pistonAssembly = _pistonAssembly;
                 tdc = _tdc;
@@ -27,27 +27,32 @@ namespace EBC.Engine_Components
 
         private float _angle;
 
-        private cylinder[] _cylinders;
+        private Cylinder[] _cylinders;
         
-        public Bank (PistonAssembly pistonAssembly, XmlDocument engineXml)
+        public Bank (PistonAssembly pistonAssembly, XmlNode bankXml)
         {
+            _angle = Convert.ToSingle(bankXml.SelectSingleNode("angle").InnerText);
 
-            XmlNodeList tdcData = (engineXml.SelectNodes("Engine/crank/bank/pin/tdc"));
+            XmlNodeList cylinderNodes = bankXml.SelectNodes("pin");
+            _cylinders = new Cylinder[cylinderNodes.Count];
 
-            _cylinders = new cylinder[tdcData.Count()];
-
-            for(int i = 0; i < _cylinders.Count(); i++)
+            for(int i = 0; i < _cylinders.Length; i++)
             {
-                _cylinders[i] = new cylinder(pistonAssembly, Convert.ToSingle(tdcData[i].InnerText));
+                _cylinders[i] = new Cylinder
+                (
+                    pistonAssembly,
+                    Convert.ToSingle(cylinderNodes[i].SelectSingleNode("tdc").InnerText)
+                );
             }
+            
         } 
-        public Force ComputeReciprocatingForces(float crankRotationDeg)
+        public Force ComputeReciprocatingForces(float crankRotationDeg, float angularVelocity)
         {
-            Force totalForce = new Force();
+            Force totalForce = Force.NewForcebyCartesian(0f,0f);
 
-            foreach(cylinder cyl in _cylinders)
+            foreach(Cylinder cyl in _cylinders)
             {
-                totalForce = Force.AddForces(totalForce, cyl.pistonAssembly.ComputeReciprocatingForce(crankRotationDeg, cyl.tdc, _angle));
+                totalForce = Force.AddForces(totalForce, cyl.pistonAssembly.ComputeReciprocatingForce(crankRotationDeg, cyl.tdc, _angle, angularVelocity));
             }
 
             return totalForce;
