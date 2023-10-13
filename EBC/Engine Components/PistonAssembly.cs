@@ -22,23 +22,31 @@ namespace EBC.Engine_Components
         public PistonAssembly (XmlDocument engineXml)
         {
             string pistonPath = "Engine/pistonAssembly/piston/";
-            _piston.Mass = Convert.ToSingle(engineXml.SelectSingleNode(pistonPath + "mass").InnerText);
-            _piston.Offset = Convert.ToSingle(engineXml.SelectSingleNode(pistonPath + "offset").InnerText);
+            _piston = new Piston
+                (
+                mass: Convert.ToSingle(engineXml.SelectSingleNode(pistonPath + "mass").InnerText),
+                offset: Convert.ToSingle(engineXml.SelectSingleNode(pistonPath + "offset").InnerText)
+                );
 
-            string conRodPath = "Engine/pistonAssembly/conRod";
-            _conRod.Length = Convert.ToSingle(engineXml.SelectSingleNode(conRodPath + "length").InnerText);
-            _conRod.COMLength = Convert.ToSingle(engineXml.SelectSingleNode(conRodPath + "comLength").InnerText);
-            _conRod.Mass = Convert.ToSingle(engineXml.SelectSingleNode(conRodPath + "mass").InnerText);
+            string conRodPath = "Engine/pistonAssembly/conRod/";
+            _conRod = new ConRod
+                (
+                mass: Convert.ToSingle(engineXml.SelectSingleNode(conRodPath + "comLength").InnerText),
+                length: Convert.ToSingle(engineXml.SelectSingleNode(conRodPath + "length").InnerText),
+                comLength: Convert.ToSingle(engineXml.SelectSingleNode(conRodPath + "mass").InnerText)
+                );
            
-            string crankSlicePath = "Engine/pistonAssembly/crankSlice";
-            _crankSlice.Throw = Convert.ToSingle(engineXml.SelectSingleNode(crankSlicePath + "throw").InnerText);
-            _crankSlice.Mass = Convert.ToSingle(engineXml.SelectSingleNode(crankSlicePath + "mass").InnerText);
-
+            string crankSlicePath = "Engine/pistonAssembly/crankSlice/";
+            _crankSlice = new CrankSlice
+                (
+                mass: Convert.ToSingle(engineXml.SelectSingleNode(crankSlicePath + "mass").InnerText),
+                _throw: Convert.ToSingle(engineXml.SelectSingleNode(crankSlicePath + "throw").InnerText)
+                );
         }
 
 
         // the
-        public Force ComputeReciprocatingForce(float crankRotationDeg, float tdcDeg, float angle)
+        public Force ComputeReciprocatingForce(float crankRotationDeg, float tdcDeg, float angle, float angularVelocity)
         {
             float pos = (crankRotationDeg - tdcDeg) * (MathF.Tau / 360f);
 
@@ -52,17 +60,19 @@ namespace EBC.Engine_Components
             float jHorz = (_crankSlice.Throw * MathF.Sin(pos) - _piston.Offset);
             float jHorzSqr = jHorz * jHorz;
 
-            float magnitude = (_piston.Mass + _conRod.Mass * (_conRod.COMLength / _conRod.Length)) *
+            float magnitude = angularVelocity * (_piston.Mass + _conRod.Mass * (_conRod.COMLength / _conRod.Length)) *
                 (
-                -jVertSqr / MathF.Sqrt(asqr - jHorzSqr)
+                -jVertSqr / MathF.Sqrt(MathF.Abs(asqr - jHorzSqr))
                 - (jVertSqr * jHorzSqr) / MathF.Pow(asqr - jHorzSqr, 2f / 3f)
-                + ((jHorz + _piston.Offset) * jHorz) / MathF.Sqrt(asqr - jHorzSqr)
+                + ((jHorz + _piston.Offset) * jHorz) / MathF.Sqrt( MathF.Abs(asqr - jHorzSqr))
                 - jVert
                 );
-
+            
             float direction = angle - 180f;
 
-            PrimaryForce = new Force(_direction: direction, _magnitude: magnitude);
+            Console.WriteLine(Convert.ToString(magnitude));
+
+            PrimaryForce = Force.NewForcebyPolar(direction, magnitude);
 
             return PrimaryForce;
         }
