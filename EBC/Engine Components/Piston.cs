@@ -11,7 +11,7 @@ namespace EBC.Engine_Components
         public float Mass { get; private set; }
         public float Offset { get; private set; }
 
-        public Piston(float mass, float offset)
+        public Piston(float mass = Single.NaN, float offset = Single.NaN)
         {
             Mass = mass;
             Offset = offset;

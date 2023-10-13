@@ -16,7 +16,7 @@ namespace EBC.Engine_Components
         /// </summary>
         public float COMLength { get; private set; }
 
-        public CrankSlice (float mass, float _throw, float comLength)
+        public CrankSlice (float mass = Single.NaN, float _throw = Single.NaN, float comLength = Single.NaN)
         {
             Mass = mass;
             Throw = _throw;

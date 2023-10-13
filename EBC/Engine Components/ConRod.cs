@@ -15,7 +15,7 @@ namespace EBC.Engine_Components
         /// distance (from crank end) at which COM occurs
         /// </summary>
         public float COMLength { get; private set; }
-        public ConRod(float mass, float length, float comLength)
+        public ConRod(float mass = Single.NaN, float length = Single.NaN, float comLength = Single.NaN)
         {
             Mass = mass;
             Length = length;
