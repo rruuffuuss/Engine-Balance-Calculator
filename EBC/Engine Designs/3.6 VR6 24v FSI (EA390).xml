@@ -23,11 +23,11 @@ ANGLES- DEGREES
       <comLength>0.34</comLength><!--estimate-->
     </conRod>
 
-    <CrankSlice>
+    <crankSlice>
       <mass>3.73</mass><!--based on total weight / 6-->
       <throw>0.047</throw><!--estimate based of measuring technical drawing -->
       <comLength>0.03</comLength><!--literal guess-->
-    </CrankSlice>
+    </crankSlice>
 
   </pistonAssembly>
 
