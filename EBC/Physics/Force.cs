@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace EBC.Physics
 {
-    internal class Force
+    //x is "across" cylinders
+    //y is upwards
+    //z is along crankshaft
+    internal class Force1
     {
+        public Vector3 Moments { get; private set; }
+
         private float direction;
         /// <summary>
         /// Direction in degrees clockwise from vertical (crank rotation)
@@ -52,19 +58,19 @@ namespace EBC.Physics
             }
         }
 
-        public static Force NewForcebyPolar(float _direction, float _magnitude)
+        public static Force NewForcebyPolar(float _direction, float _magnitude, Vector3 position)
         {
-            return new Force(_direction, _magnitude, false);
+            return new Force(_direction, _magnitude, position, false);
         }
         
-        public static Force NewForcebyCartesian( float _xcomponent, float _ycomponent)
+        public static Force NewForcebyCartesian( float _xcomponent, float _ycomponent, Vector3 position)
         {
-            return new Force(_xcomponent, _ycomponent, true);
+            return new Force(_xcomponent, _ycomponent, position, true);
         }
 
-        private Force (float a, float b, bool fromCartesian)
+        private Force (float a, float b, Vector3 position, bool fromCartesian)
         {
-            if(fromCartesian = true)
+            if(fromCartesian == true)
             {
                 xcomponent = a; ycomponent = b;
                 Normalise(true);
@@ -74,9 +80,11 @@ namespace EBC.Physics
                 direction = a; magnitude = b;
                 Normalise(false);
             }
+
+            
         }
 
-        private void Normalise(bool fromCartesian)
+        private void Normalise(bool fromCartesian, Vector3 position)
         {
 
             if (fromCartesian)

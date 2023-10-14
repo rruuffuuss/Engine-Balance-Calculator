@@ -38,17 +38,17 @@ ANGLES- DEGREES
       <angle>5.4</angle>      
       
       <pin>
-        <position></position>
+        <position>-0.975</position>
         <tdc>240</tdc>
       </pin>
 
       <pin>
-        <position></position>
+        <position>0.0325</position>
         <tdc>120</tdc>      
       </pin>
 
       <pin>
-        <position></position>
+        <position>0.1625</position>
         <tdc>0</tdc>      
       </pin>
 
@@ -59,17 +59,17 @@ ANGLES- DEGREES
       <angle>354.6</angle>
         
       <pin>
-        <position></position>
+        <position>-0.162.5</position>
         <tdc>0</tdc>
       </pin>
 
       <pin>
-        <position></position>
+        <position>-0.0325</position>
         <tdc>120</tdc>
       </pin>
 
       <pin>
-        <position></position>
+        <position>0.0975</position>
         <tdc>240</tdc>
       </pin>
 
