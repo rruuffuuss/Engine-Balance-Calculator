@@ -10,7 +10,7 @@ namespace EBC.Physics
     //x is "across" cylinders
     //y is upwards
     //z is along crankshaft
-    internal class Force1
+    internal class ForceOld
     {
         public Vector3 Moments { get; private set; }
 
