@@ -17,11 +17,13 @@ namespace EBC.Engine_Components
             /*note the tdc variable is actually the angle at which the crank segment is parallel to the cylinder and popinting toward it
             in engines with cylinder offset, this is not top ddead center*/
             public float tdc;
+            public float position;
 
-            public Cylinder (PistonAssembly _pistonAssembly, float _tdc)
+            public Cylinder (PistonAssembly _pistonAssembly, float _tdc, float _position )
             {
                 pistonAssembly = _pistonAssembly;
                 tdc = _tdc;
+                position = _position;
             }
         }
 
@@ -41,7 +43,8 @@ namespace EBC.Engine_Components
                 _cylinders[i] = new Cylinder
                 (
                     pistonAssembly,
-                    Convert.ToSingle(cylinderNodes[i].SelectSingleNode("tdc").InnerText)
+                    Convert.ToSingle(cylinderNodes[i].SelectSingleNode("tdc").InnerText),
+                    Convert.ToSingle(cylinderNodes[i].SelectSingleNode("position").InnerText)                   
                 );
             }
             
@@ -52,7 +55,7 @@ namespace EBC.Engine_Components
 
             foreach(Cylinder cyl in _cylinders)
             {
-                totalForce = Force.AddForces(totalForce, cyl.pistonAssembly.ComputeReciprocatingForce(crankRotationDeg, cyl.tdc, _angle, angularVelocity));
+                totalForce = Force.AddForces(totalForce, cyl.pistonAssembly.ComputeReciprocatingForce(crankRotationDeg, cyl.tdc, _angle, angularVelocity, cyl.position);
             }
 
             return totalForce;

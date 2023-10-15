@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -46,7 +47,7 @@ namespace EBC.Engine_Components
 
 
         // the
-        public Force ComputeReciprocatingForce(float crankRotationDeg, float tdcDeg, float angle, float angularVelocity)
+        public Force ComputeReciprocatingForce(float crankRotationDeg, float tdcDeg, float angle, float angularVelocity, float ZPosition)
         {
             float pos = (crankRotationDeg - tdcDeg) * (MathF.Tau / 360f);
 
@@ -72,9 +73,19 @@ namespace EBC.Engine_Components
 
             Console.WriteLine(Convert.ToString(magnitude));
 
-            PrimaryForce = Force.NewForcebyPolar(direction, magnitude);
+            float 
 
-            return PrimaryForce;
+            Vector3 position = new Vector3(
+                );
+
+            PrimaryForce = (direction, magnitude, position);
+
+            return PrimaryForce;  
+        }
+
+        public float CrankDisplacementVertical(float rot)
+        {
+            return (_crankSlice.Throw * MathF.Cos(rot)) + MathF.Sqrt(_conRod.Length * _conRod.Length - MathF.Pow(_crankSlice.Throw * MathF.Sin(rot) - _piston.Offset,2))
         }
     }
 }
