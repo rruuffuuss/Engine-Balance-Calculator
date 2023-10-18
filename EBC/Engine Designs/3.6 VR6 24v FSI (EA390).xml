@@ -18,9 +18,9 @@ ANGLES- DEGREES
     </piston>
 
     <conRod>
-      <mass>500</mass> <!--this is a guess i cannot find the weight-->
+      <mass>0.5</mass> <!--this is a guess i cannot find the weight-->
       <length>0.161</length>
-      <comLength>0.34</comLength><!--estimate-->
+      <comLength>0.034</comLength><!--estimate-->
     </conRod>
 
     <crankSlice>
@@ -59,7 +59,7 @@ ANGLES- DEGREES
       <angle>354.6</angle>
         
       <pin>
-        <position>-0.162.5</position>
+        <position>-0.1625</position>
         <tdc>0</tdc>
       </pin>
 
