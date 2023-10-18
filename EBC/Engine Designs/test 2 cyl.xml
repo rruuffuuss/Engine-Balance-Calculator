@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- 
+UNITS
+LENGTHS- METERS
+MASS- KILOGRAMS
+ANGLES- DEGREES
+-->
+<Engine>
+
+  <name>test 1 cylinder</name>
+
+  <pistonAssembly>
+
+    <piston>
+      <mass>0.6</mass>
+      <offset>0</offset>
+    </piston>
+
+    <conRod>
+      <mass>0.5</mass> <!--this is a guess i cannot find the weight-->
+      <length>0.15</length>
+      <comLength>0.04</comLength><!--estimate-->
+    </conRod>
+
+    <crankSlice>
+      <mass>3</mass>
+      <throw>0.05</throw>
+      <comLength>0.03</comLength>
+    </crankSlice>
+
+  </pistonAssembly>
+
+  <crank>
+
+    <bank>
+
+      <angle>0</angle>      
+      
+      <pin>
+        <position>0.05</position>
+        <tdc>0</tdc>
+      </pin>
+
+      <pin>
+        <position>-0.05</position>
+        <tdc>0</tdc>
+      </pin>
+
+    </bank>
+
+  </crank>
+
+</Engine>
