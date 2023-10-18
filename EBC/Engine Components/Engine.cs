@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Numerics;
 
 namespace EBC.Engine_Components
 {
@@ -32,15 +33,31 @@ namespace EBC.Engine_Components
 
         }
 
+        //Shld probably combine these 2 functions somehow
         public Force ComputeReciprocatingForces(float CrankRotation, float RPM)
         {
-            Force totalForce = Force.NewForcebyCartesian(0f, 0f);
+            Force totalForce = new Force(new Vector3(), new Vector3());
             float angularVelocity = MathF.Tau * RPM;
             foreach(Bank bank in banks)
             {
                 totalForce = Force.AddForces(totalForce, bank.ComputeReciprocatingForces(CrankRotation, angularVelocity));
             }
             return totalForce;
+        }
+        public Force ComputeCentripetalForce(float CrankRotation, float RPM)
+        {
+            Force totalForce = new Force(new Vector3(), new Vector3());
+            float angularVelocity = MathF.Tau * RPM;
+            foreach (Bank bank in banks)
+            {
+                totalForce = Force.AddForces(totalForce, bank.ComputeCentripetalForce(CrankRotation, angularVelocity));
+            }
+            return totalForce;
+        }
+
+        public Force ComputeAllForces(float CrankRotation, float RPM) 
+        {
+            return Force.AddForces(ComputeReciprocatingForces(CrankRotation, RPM), ComputeCentripetalForce(CrankRotation, RPM));
         }
     }
 }

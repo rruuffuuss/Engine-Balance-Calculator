@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Numerics;
 
 namespace EBC.Engine_Components
 {
@@ -51,14 +52,26 @@ namespace EBC.Engine_Components
         } 
         public Force ComputeReciprocatingForces(float crankRotationDeg, float angularVelocity)
         {
-            Force totalForce = Force.NewForcebyCartesian(0f,0f);
+            Force totalForce = new Force(new Vector3(), new Vector3());
 
             foreach(Cylinder cyl in _cylinders)
             {
-                totalForce = Force.AddForces(totalForce, cyl.pistonAssembly.ComputeReciprocatingForce(crankRotationDeg, cyl.tdc, _angle, angularVelocity, cyl.position);
+                totalForce = Force.AddForces(totalForce, cyl.pistonAssembly.ComputeReciprocatingForce(crankRotationDeg, cyl.tdc, _angle, angularVelocity, cyl.position));
             }
 
             return totalForce;
+        }
+        public Force ComputeCentripetalForce(float crankRotationDeg, float angularVelocity)
+        {
+            Force totalForce = new Force(new Vector3(), new Vector3());
+
+            foreach (Cylinder cyl in _cylinders)
+            {
+                totalForce = Force.AddForces(totalForce, cyl.pistonAssembly.ComputeCentripetalForce(crankRotationDeg, angularVelocity, cyl.position));
+            }
+
+            return totalForce;
+
         }
     }
 }
