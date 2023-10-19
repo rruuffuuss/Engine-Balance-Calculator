@@ -10,7 +10,7 @@ using System.Numerics;
 
 namespace EBC.Engine_Components
 {
-    internal class Engine
+    public class Engine
     {
         private Bank[] banks;
 
@@ -44,7 +44,8 @@ namespace EBC.Engine_Components
             }
             return totalForce;
         }
-        public Force ComputeCentripetalForce(float CrankRotation, float RPM)
+        public Force 
+            ComputeCentripetalForce(float CrankRotation, float RPM)
         {
             Force totalForce = Force.GetForceEmpty();
             float angularVelocity = MathF.Tau * RPM;
