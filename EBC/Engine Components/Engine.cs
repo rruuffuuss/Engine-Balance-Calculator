@@ -36,7 +36,7 @@ namespace EBC.Engine_Components
         //Shld probably combine these 2 functions somehow
         public Force ComputeReciprocatingForces(float CrankRotation, float RPM)
         {
-            Force totalForce = new Force(new Vector3(), new Vector3());
+            Force totalForce = Force.GetForceEmpty();
             float angularVelocity = MathF.Tau * RPM;
             foreach(Bank bank in banks)
             {
@@ -46,7 +46,7 @@ namespace EBC.Engine_Components
         }
         public Force ComputeCentripetalForce(float CrankRotation, float RPM)
         {
-            Force totalForce = new Force(new Vector3(), new Vector3());
+            Force totalForce = Force.GetForceEmpty();
             float angularVelocity = MathF.Tau * RPM;
             foreach (Bank bank in banks)
             {

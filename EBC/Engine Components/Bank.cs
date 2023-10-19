@@ -52,7 +52,7 @@ namespace EBC.Engine_Components
         } 
         public Force ComputeReciprocatingForces(float crankRotationDeg, float angularVelocity)
         {
-            Force totalForce = new Force(new Vector3(), new Vector3());
+            Force totalForce = Force.GetForceEmpty();
 
             foreach(Cylinder cyl in _cylinders)
             {
@@ -63,7 +63,7 @@ namespace EBC.Engine_Components
         }
         public Force ComputeCentripetalForce(float crankRotationDeg, float angularVelocity)
         {
-            Force totalForce = new Force(new Vector3(), new Vector3());
+            Force totalForce = Force.GetForceEmpty();
 
             foreach (Cylinder cyl in _cylinders)
             {

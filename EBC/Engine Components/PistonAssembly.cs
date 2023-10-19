@@ -80,8 +80,9 @@ namespace EBC.Engine_Components
                 ZPosition
                 );
 
-            PrimaryForce = new Force(magnitude, angle - 180f ,position);
-
+            PrimaryForce = Force.ForceFromDirection(magnitude, angle - 180f ,position);
+            Console.WriteLine(Convert.ToString(PrimaryForce.Components));
+            Console.WriteLine(Convert.ToString(PrimaryForce.Moments));
             return PrimaryForce;  
         }
 
@@ -91,7 +92,7 @@ namespace EBC.Engine_Components
 
             return Force.AddForces
             (
-                new Force
+                Force.ForceFromDirection
                 (
                     _crankSlice.Mass * angularVelocity * angularVelocity * _crankSlice.COMLength,
                     crankRotationDeg - 180,
@@ -102,7 +103,7 @@ namespace EBC.Engine_Components
                         ZPosition
                     )
                 ),
-                new Force
+                Force.ForceFromDirection
                     (
                     _conRod.Mass * ((_conRod.Length - _conRod.COMLength) / _conRod.Length) * angularVelocity * angularVelocity *_crankSlice.Throw,
                     crankRotationDeg,
