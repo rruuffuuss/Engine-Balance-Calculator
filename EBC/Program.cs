@@ -11,14 +11,17 @@ while (true)
     Console.WriteLine("enter crank rotation");
     float rot = Convert.ToSingle(Console.ReadLine());
 
-    Console.WriteLine("enter engine speed");
-    float RPM = Convert.ToSingle(Console.ReadLine());
+    //Console.WriteLine("enter engine speed");
+    float RPM = 1000;// Convert.ToSingle(Console.ReadLine());
 
     Force C = R36.ComputeCentripetalForce(rot,RPM);
     Force R = R36.ComputeReciprocatingForces(rot, RPM);
     Force A = R36.ComputeAllForces(rot, RPM);
     Console.WriteLine(Convert.ToString("C" + C.Components));
     Console.WriteLine(Convert.ToString("R" + R.Components));
-    Console.WriteLine(Convert.ToString("A" + A.Components));
+    Console.WriteLine(Convert.ToString("A" + A.Components + "\n\n\n"));
+    Console.WriteLine(Convert.ToString("C" + C.Moments));
+    Console.WriteLine(Convert.ToString("R" + R.Moments));
+    Console.WriteLine(Convert.ToString("A" + A.Moments));
 
 }
