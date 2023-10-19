@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- 
+UNITS
+LENGTHS- METERS
+MASS- KILOGRAMS
+ANGLES- DEGREES
+-->
+<Engine>
+
+  <name>3.6 VR6 24v FSI (EA390)</name>
+
+  <pistonAssembly>
+
+    <piston>
+      <mass>0.547</mass>
+      <offset>0.022</offset>
+    </piston>
+
+    <conRod>
+      <mass>500</mass> <!--this is a guess i cannot find the weight-->
+      <length>0.161</length>
+      <comLength>0.34</comLength><!--estimate-->
+    </conRod>
+
+    <crankSlice>
+      <mass>3.73</mass><!--based on total weight / 6-->
+      <throw>0.047</throw><!--estimate based of measuring technical drawing -->
+      <comLength>0.03</comLength><!--literal guess-->
+    </crankSlice>
+
+  </pistonAssembly>
+
+  <crank>
+
+    <bank>
+
+      <angle>5.4</angle>      
+      
+      <pin>
+        <position>-0.975</position>
+        <tdc>240</tdc>
+      </pin>
+
+      <pin>
+        <position>0.0325</position>
+        <tdc>120</tdc>      
+      </pin>
+
+      <pin>
+        <position>0.1625</position>
+        <tdc>0</tdc>      
+      </pin>
+
+    </bank>
+
+    <bank>
+
+      <angle>354.6</angle>
+        
+      <pin>
+        <position>-0.1625</position>
+        <tdc>0</tdc>
+      </pin>
+
+      <pin>
+        <position>-0.0325</position>
+        <tdc>120</tdc>
+      </pin>
+
+      <pin>
+        <position>0.0975</position>
+        <tdc>240</tdc>
+      </pin>
+
+    </bank>
+
+  </crank>
+
+</Engine>
