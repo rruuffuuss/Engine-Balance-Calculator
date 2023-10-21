@@ -55,19 +55,19 @@ namespace EBC.Engine_Components
             float asqr = _conRod.Length * _conRod.Length;
 
             //crank journal vertical displacement
-            float jVert = _crankSlice.Throw* angularVelocity * MathF.Cos(pos); //bcos(x)
+            float jVert = _crankSlice.Throw * MathF.Cos(pos); //bcos(x)
             float jVertSqr = jVert * jVert; //b^2cos^2(x)
 
             //cramk journal horizontal displacement
             float jHorz = (_crankSlice.Throw * MathF.Sin(pos) - _piston.Offset);
             float jHorzSqr = jHorz * jHorz;
 
-            float magnitude = (_piston.Mass + _conRod.Mass * (_conRod.COMLength / _conRod.Length)) *
+            float magnitude = angularVelocity * angularVelocity * (_piston.Mass + _conRod.Mass * (_conRod.COMLength / _conRod.Length)) *
                 (
                 -jVertSqr / MathF.Sqrt(MathF.Abs(asqr - jHorzSqr))
                 - (jVertSqr * jHorzSqr) / MathF.Pow(asqr - jHorzSqr, 2f / 3f)
-                + ((jHorz + _piston.Offset) * jHorz * angularVelocity * angularVelocity) / MathF.Sqrt( MathF.Abs(asqr - jHorzSqr))
-                - angularVelocity * jVert
+                + ((jHorz + _piston.Offset) * jHorz) / MathF.Sqrt( MathF.Abs(asqr - jHorzSqr))
+                - jVert
                 );
             
             Console.WriteLine(Convert.ToString(magnitude));
