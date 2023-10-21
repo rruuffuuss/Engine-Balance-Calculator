@@ -35,16 +35,21 @@ ANGLES- DEGREES
 
     <bank>
 
-      <angle>0</angle>      
+      <angle>0</angle>
       
       <pin>
-        <position>0.05</position>
-        <tdc>180</tdc>
+        <position>0.1</position>
+        <tdc>0</tdc>
       </pin>
 
       <pin>
-        <position>-0.05</position>
-        <tdc>0</tdc>
+        <position>0</position>
+        <tdc>120</tdc>
+      </pin>
+
+      <pin>
+        <position>-0.1</position>
+        <tdc>240</tdc>        
       </pin>
 
     </bank>

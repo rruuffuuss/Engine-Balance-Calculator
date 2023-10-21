@@ -18,15 +18,16 @@ ANGLES- DEGREES
     </piston>
 
     <conRod>
-      <mass>500</mass> <!--this is a guess i cannot find the weight-->
+      <mass>0.5</mass> <!--this is a guess i cannot find the weight-->
       <length>0.15</length>
-      <comLength>0.5</comLength><!--estimate-->
+      <comLength>0.04</comLength><!--estimate-->
     </conRod>
 
     <crankSlice>
-      <mass>3</mass><!--based on total weight / 6-->
-      <throw>0.05</throw><!--estimate based of measuring technical drawing -->
-      <comLength>0.03</comLength><!--literal guess-->
+      <mass>2.241555</mass>
+      <!--2.241555 balances force of piston at tdc0-->
+      <throw>0.05</throw>
+      <comLength>0.03</comLength>
     </crankSlice>
 
   </pistonAssembly>
@@ -38,7 +39,7 @@ ANGLES- DEGREES
       <angle>0</angle>      
       
       <pin>
-        <position>0</position>
+        <position>0.0</position>
         <tdc>0</tdc>
       </pin>
 
