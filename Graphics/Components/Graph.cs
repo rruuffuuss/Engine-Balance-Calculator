@@ -47,8 +47,8 @@ namespace Graphics.Components
 
             Vector3 origin = new Vector3
             (
-                _position.X + _dimensions.X / 2f,
-                _position.Y + _dimensions.Y / 2f,
+                _position.X + _dimensions.X / 2f - _pointTexture.Width / 2f,
+                _position.Y + _dimensions.Y / 2f - _pointTexture.Height / 2f,
                 0
             );
 
@@ -81,8 +81,8 @@ namespace Graphics.Components
                 _currentPointTexture,
                 new Vector2
                 (
-                    _points[_pointNumber].X,
-                    _points[_pointNumber].Y
+                    _points[_pointNumber].X - _currentPointTexture.Width / 2f,
+                    _points[_pointNumber].Y - _currentPointTexture.Height / 2f
                 ),
                 _currentPointColour
             );
