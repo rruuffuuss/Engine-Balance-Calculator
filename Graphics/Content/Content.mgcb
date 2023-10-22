@@ -13,13 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Baloo 2 SemiBold.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Baloo 2 SemiBold.spritefont
-
 #begin currentPoint.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -31,6 +24,25 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:currentPoint.png
+
+#begin DM Mono Regular.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:DM Mono Regular.spritefont
+
+#begin layout.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:layout.png
 
 #begin point.png
 /importer:TextureImporter
