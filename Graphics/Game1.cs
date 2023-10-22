@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
-using EBC.Engine_Components;
 using EBC.Physics;
 using Graphics.Components;
+using Graphics.Components.Labels;
+using Graphics.Holders;
 
 namespace Graphics
 {
@@ -12,16 +12,21 @@ namespace Graphics
     {
 
         private Force[] _forces;
+        private ForceHolder _currentForce;
         private int _forceNumber;
+        private float _crankRotation;
+        private numHolder _crankRotHolder;
 
         private DDDGraph _componentGraph;
         private DDDGraph _momentGraph;
+
+        private  Graphics.Components.Labels.Label[] _labels;
 
         private GraphicsDeviceManager _graphics;
         private float _guiScale;
 
         private SpriteBatch _spriteBatch;
-
+        private Texture2D _background;
 
 
 
@@ -51,9 +56,6 @@ namespace Graphics
             _graphics.HardwareModeSwitch = false;
             _graphics.ApplyChanges();
 
-            _guiScale = _graphics.PreferredBackBufferWidth * 1080f;
-
-
         }
 
         protected override void LoadContent()
@@ -65,8 +67,16 @@ namespace Graphics
             //load textures
             Texture2D _pointTexture = Content.Load<Texture2D>("point");
             Texture2D _currentPointTexture = Content.Load<Texture2D>("currentPoint");
+            _background = Content.Load<Texture2D>("layout");
             //load font
-            SpriteFont _baloo = Content.Load<SpriteFont>("Baloo 2 SemiBold");
+            SpriteFont _DM_Mono = Content.Load<SpriteFont>("DM Mono Regular");
+
+            _guiScale = GraphicsDevice.DisplayMode.Width / 1920f;
+
+            //init holders
+            _currentForce = new ForceHolder();
+            _currentForce.force = Force.GetForceEmpty();
+            _crankRotHolder = new numHolder();
 
             //load components
 
@@ -75,9 +85,9 @@ namespace Graphics
                 _pointTexture,
                 _currentPointTexture,
                 Color.Red,
-                Color.White,
-                new Vector3(0,0,0),
-                new Vector3(720,720,720)
+                Color.Blue,
+                Vector3.Multiply(new Vector3(0,0,0), _guiScale),
+                Vector3.Multiply(new Vector3(720,720,720), _guiScale)
             );
 
             _momentGraph.LoadContent
@@ -85,10 +95,80 @@ namespace Graphics
                 _pointTexture,
                 _currentPointTexture,
                 Color.Blue,
-                Color.White,
-                new Vector3(1200, 0, 0),
-                new Vector3(720, 720, 720)
+                Color.Red,
+                Vector3.Multiply(new Vector3(1200, 0, 0), _guiScale),
+                Vector3.Multiply(new Vector3(720, 720, 720),_guiScale)
             );
+
+            _labels = new Components.Labels.Label[]
+            {
+                new CrankLabel
+                (
+                    Vector2.Multiply(new Vector2(1045,16),_guiScale),
+                    _DM_Mono,
+                    Color.Black,
+                    "deg",
+                    7,
+                    _crankRotHolder
+                ),
+                new XCompLabel
+                (
+                    Vector2.Multiply(new Vector2(765,107), _guiScale),
+                    _DM_Mono,
+                    Color.Black,
+                    "N",
+                     8,
+                    _currentForce
+                ),
+                new YCompLabel
+                (
+                    Vector2.Multiply(new Vector2(765,171), _guiScale),
+                    _DM_Mono,
+                    Color.Black,
+                    "N",
+                     8,
+                    _currentForce
+                ),
+                new ZCompLabel
+                (
+                    Vector2.Multiply(new Vector2(765,234), _guiScale),
+                    _DM_Mono,
+                    Color.Black,
+                    "N",
+                     8,
+                    _currentForce
+                ),
+                new XMomLabel
+                (
+                    Vector2.Multiply(new Vector2(1005,107), _guiScale),
+                    _DM_Mono,
+                    Color.Black,
+                    "N",
+                     8,
+                    _currentForce
+                ),
+                new YMomLabel
+                (
+                    Vector2.Multiply(new Vector2(1005,171), _guiScale),
+                    _DM_Mono,
+                    Color.Black,
+                    "N",
+                     8,
+                    _currentForce
+                ),
+                new ZMomLabel
+                (
+                    Vector2.Multiply(new Vector2(1005,234), _guiScale),
+                    _DM_Mono,
+                    Color.Black,
+                    "N",
+                     8,
+                    _currentForce
+                ),
+            };
+
+
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -101,19 +181,35 @@ namespace Graphics
             //go to next force 
             _forceNumber += 1;
             if(_forceNumber >= _forces.Length) _forceNumber = 0;
+            _currentForce.force = _forces[_forceNumber];
+
+            _crankRotation = _forceNumber * _forces.Length / 360f;
+            _crankRotHolder.value = _crankRotation;
+
+            foreach(Components.Labels.Label label in _labels)
+            {
+                label.Update();
+            }
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
+            _spriteBatch.Draw(_background,Vector2.Zero, Color.White);
+
 
             _componentGraph.Draw(gameTime, _spriteBatch, _forceNumber, 0);
             _momentGraph.Draw(gameTime, _spriteBatch, _forceNumber, 0);
+
+            foreach(Components.Labels.Label label in _labels)
+            {
+                label.Draw(gameTime, _spriteBatch);
+            }
 
             _spriteBatch.End();
 

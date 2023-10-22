@@ -10,7 +10,7 @@ Vector3 MaxMoments = Vector3.Zero;
 float maxComponent = 0;
 float maxMoment = 0;
 
-Engine engine = new Engine("D:\\.bodeine\\Engine Balance Calculator\\EBC\\EBC\\Engine Designs\\test 2 cyl.xml");
+Engine engine = new Engine("D:\\.bodeine\\Engine Balance Calculator\\EBC\\EBC\\Engine Designs\\test 1 cyl.xml");
  Force[] forces = new Force[360];
 
 
@@ -33,7 +33,7 @@ for (int i = 0; i < forces.Length; i++)
     moments[i] = forces[i].Moments;
 }
 
-using var game = new Graphics.Game1(components, moments, maxComponent, maxMoment);
+using var game = new Graphics.Game1(components, moments, maxComponent, maxMoment, forces);
 game.Run();
 
 
