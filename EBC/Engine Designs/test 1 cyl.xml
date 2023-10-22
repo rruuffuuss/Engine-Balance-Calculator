@@ -18,14 +18,13 @@ ANGLES- DEGREES
     </piston>
 
     <conRod>
-      <mass>0.5</mass> <!--this is a guess i cannot find the weight-->
+      <mass>0.5</mass>
       <length>0.15</length>
-      <comLength>0.04</comLength><!--estimate-->
+      <comLength>0.04</comLength>
     </conRod>
 
     <crankSlice>
-      <mass>2.241555</mass>
-      <!--2.241555 balances force of piston at tdc0-->
+      <mass>2.241555</mass><!--2.241555 balances force of piston at tdc0-->
       <throw>0.05</throw>
       <comLength>0.03</comLength>
     </crankSlice>
