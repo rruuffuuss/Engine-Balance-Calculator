@@ -60,5 +60,12 @@ namespace EBC.Engine_Components
         {
             return Force.AddForces(ComputeReciprocatingForces(CrankRotation, RPM), ComputeCentripetalForce(CrankRotation, RPM));
         }
+
+        public Vector3[,] GetPartPosition(float CrankRotation) 
+        {
+
+        }
+
+        get
     }
 }
