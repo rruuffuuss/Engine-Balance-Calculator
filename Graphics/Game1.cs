@@ -8,6 +8,7 @@ using Graphics.Holders;
 using System;
 using EBC.Engine_Components;
 
+
 namespace Graphics
 {
     public class Game1 : Game
@@ -19,8 +20,8 @@ namespace Graphics
         private float _crankRotation;
         private numHolder _crankRotHolder;
 
-        private DDDGraph _componentGraph;
-        private DDDGraph _momentGraph;
+        private Graph _componentGraph;
+        private Graph _momentGraph;
 
         private MouseState _newMouseState;
         private MouseState _oldMouseState;
@@ -33,7 +34,11 @@ namespace Graphics
         private SpriteBatch _spriteBatch;
         private Texture2D _background;
 
-
+        //theme colours
+        private Color Colour1 = new Color(153, 162, 255);
+        private Color Colour2 = new Color(153, 255, 182);
+        private Color Colour3 = new Color(255, 152, 152);
+        private Color Colour4 = new Color(255, 233, 153);
 
         public Game1(Engine engine, float RPM, int measurementNo)
         {
@@ -54,7 +59,7 @@ namespace Graphics
             {
 
 
-                forces[i] = engine.ComputeAllForces((i / measurementNo) * 360f, RPM);
+                forces[i] = engine.ComputeAllForces(((float)i / (float)measurementNo) * 360f, RPM);
 
                 if (MathF.Abs(forces[i].Components.X) > maxComponent) maxComponent = MathF.Abs(forces[i].Components.X);
                 if (MathF.Abs(forces[i].Components.Y) > maxComponent) maxComponent = MathF.Abs(forces[i].Components.Y);
@@ -70,10 +75,8 @@ namespace Graphics
 
             _graphics = new GraphicsDeviceManager(this);
 
-
-
-            _componentGraph = new DDDGraph(components, maxComponent);
-            _momentGraph = new DDDGraph(moments, maxMoment);
+            _componentGraph = new Graph(components, maxComponent, engine);
+            _momentGraph = new Graph(moments, maxMoment, engine);
 
             _forces = forces;
 
@@ -106,6 +109,7 @@ namespace Graphics
             //load textures
             Texture2D _pointTexture = Content.Load<Texture2D>("point");
             Texture2D _currentPointTexture = Content.Load<Texture2D>("currentPoint");
+            Texture2D _engineLineTexture = Content.Load<Texture2D>("line");
             _background = Content.Load<Texture2D>("layout");
             //load font
             SpriteFont _DM_Mono = Content.Load<SpriteFont>("DM Mono Regular");
@@ -123,8 +127,12 @@ namespace Graphics
             (
                 _pointTexture,
                 _currentPointTexture,
-                Color.Red,
-                Color.Blue,
+                _engineLineTexture,
+                _currentPointTexture,
+                Colour1,
+                Colour3,
+                Colour2,
+                Colour4,
                 Vector2.Multiply(new Vector2(0,0), _guiScale),//ON PURPOSE, GRAPH MUST BE "CUBE"
                 Vector3.Multiply(new Vector3(720), _guiScale),
                 0.5f
@@ -134,8 +142,12 @@ namespace Graphics
             (
                 _pointTexture,
                 _currentPointTexture,
-                Color.Blue,
-                Color.Red,
+                _engineLineTexture,
+                _currentPointTexture,
+                Colour3,
+                Colour1,
+                Colour4,
+                Colour2,
                 Vector2.Multiply(new Vector2(1200, 0), _guiScale),//ON PURPOSE, GRAPH MUST BE "CUBE"
                 Vector3.Multiply(new Vector3(720),_guiScale),
                 0.5f
