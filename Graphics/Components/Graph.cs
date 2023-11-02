@@ -1,4 +1,5 @@
 ﻿
+using EBC.Engine_Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -9,16 +10,17 @@ using Point = Microsoft.Xna.Framework.Point;
 
 namespace Graphics.Components
 {
-    internal class DDDGraph
+    internal class Graph
     {
         private Vector3[] _unscaledPoints;
         private Vector3[] _points;
         private float _maxValue;
         private Vector2 _origin;
+        private EngineModel _engineModel;
+        private Engine _engine;
 
         private Texture2D _pointTexture;
         private Texture2D _currentPointTexture;
-        private SpriteFont _font;
 
         private Vector2 _position;
         private Vector2 _dimensions;
@@ -28,13 +30,15 @@ namespace Graphics.Components
         private Color _pointColor;
         private Color _currentPointColour;
 
-        public DDDGraph(Vector3[] _unscaledPoints, float _maxValue)
+
+        public Graph(Vector3[] _unscaledPoints, float _maxValue, Engine _engine)
         {
             this._unscaledPoints = _unscaledPoints;
             this._maxValue = _maxValue;
+            this._engine = _engine;
         }
 
-        public void LoadContent(Texture2D _pointTexture, Texture2D _currentPointTexture, Color _pointColor, Color _currentPointColour, Vector2 _position, Vector3 _dimensions, float _dragSensitivity)
+        public void LoadContent(Texture2D _pointTexture, Texture2D _currentPointTexture, Texture2D _engineLineTexture, Texture2D _enginePointTexture, Color _pointColor, Color _currentPointColour, Color _engineLineColour, Color _enginePointColour, Vector2 _position, Vector3 _dimensions, float _dragSensitivity)
         {
             this._pointTexture = _pointTexture;
             this._currentPointTexture = _currentPointTexture;
@@ -72,6 +76,8 @@ namespace Graphics.Components
             {
                 _points[i] = Vector3.Multiply(_unscaledPoints[i], scale);
             }
+
+            _engineModel = new EngineModel(_engine, _points.Length, _origin,Vector3.Multiply(_dimensions, new Vector3(0.5f)), _enginePointTexture, _enginePointColour, _engineLineTexture, _engineLineColour);
         }
 
 
@@ -101,6 +107,8 @@ namespace Graphics.Components
 
             float cosAlpha = MathF.Cos(_viewAngle.Y);
             float sinAlpha = MathF.Sin(_viewAngle.Y);
+
+            _engineModel.Draw(_spriteBatch, _pointNumber, cosTheta, sinTheta, cosAlpha, sinAlpha);
 
             foreach (Vector3 point in _points)
             {
