@@ -23,11 +23,11 @@ namespace EBC.Physics
         /// can only be used for a force parallel to the crankshafts plane of rotation
         /// </summary>
         /// <param name="magnitude"></param>
-        /// <param name="direction"> </param>
+        /// <param name="direction in radians"> </param>
         /// <param name="position"></param>
-        public static Force ForceFromDirection(float magnitude, float direction, Vector3 position)
+        public static Force ForceFromDirection(float magnitude, float directionRad, Vector3 position)
         {
-            Vector3 components = new Vector3(magnitude * MathF.Sin(direction * (MathF.Tau / 360f)), magnitude * MathF.Cos(direction * (MathF.Tau / 360f)), 0);
+            Vector3 components = new Vector3(magnitude * MathF.Sin(directionRad), magnitude * MathF.Cos(directionRad), 0);
             return new Force(components, calculateMoments(components, position));
         }
         public static Force GetForceEmpty()
