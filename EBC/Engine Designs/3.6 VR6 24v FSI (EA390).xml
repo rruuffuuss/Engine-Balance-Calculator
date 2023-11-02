@@ -38,7 +38,7 @@ ANGLES- DEGREES
       <angle>5.4</angle>      
       
       <pin>
-        <position>-0.975</position>
+        <position>-0.0975</position>
         <tdc>240</tdc>
       </pin>
 
