@@ -15,6 +15,8 @@ namespace Graphics.Components
         /// [x][y][0] pos of crank [x][y][1] pos of pin [x][y][2] pos of piston
         /// </summary>
         private Vector3[,,] _engImage;
+        private Vector3[,,] _pistonImage;
+
         private Vector2 _origin;
 
         private Vector2[] _assemblyImage;
