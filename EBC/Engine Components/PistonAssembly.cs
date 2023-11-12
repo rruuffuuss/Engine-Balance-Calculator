@@ -135,7 +135,7 @@ namespace EBC.Engine_Components
         }
         public Vector3 ConrodEndPosition(float crankRotationRad, float tdcRad, float offset, float bankAngle)
         {
-            return PistonPosition(PistonDisplacementVertical(crankRotationRad - tdcRad), offset, bankAngle);
+            return PistonPosition(PistonDisplacementVertical(crankRotationRad - tdcRad - bankAngle), offset, bankAngle);
         }
     }
 }
