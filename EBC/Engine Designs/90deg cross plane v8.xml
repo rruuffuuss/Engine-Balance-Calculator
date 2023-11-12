@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- 
+UNITS
+LENGTHS- METERS
+MASS- KILOGRAMS
+ANGLES- DEGREES
+-->
+<Engine>
+
+  <name>90deg cross plane v8</name>
+
+  <pistonAssembly>
+  
+    <piston>
+      <mass>0.6</mass>
+      <offset>0</offset>
+      <bore>0.089</bore>
+    </piston>
+
+    <conRod>
+      <mass>0.5</mass>
+      <length>0.15</length>
+      <comLength>0.04</comLength>
+    </conRod>
+
+    <crankSlice>
+      <mass>1.12076</mass><!--2.241555 balances force of piston at tdc0-->
+      <throw>0.05</throw>
+      <comLength>0.03</comLength>
+    </crankSlice>
+
+  </pistonAssembly>
+
+  <crank>
+
+    <bank>
+
+      <angle>315</angle>
+
+      <pin>
+        <position>-0.155</position>
+        <tdc>315</tdc>
+      </pin>
+
+      <pin>
+        <position>-0.055</position>
+        <tdc>45</tdc>
+      </pin>
+
+      <pin>
+        <position>0.045</position>
+        <tdc>135</tdc>
+      </pin>
+      
+      <pin>
+        <position>0.145</position>
+        <tdc>225</tdc>
+      </pin>
+
+    </bank>
+
+    <bank>
+
+      <angle>45</angle>
+
+      <pin>
+        <position>-0.145</position>
+        <tdc>315</tdc>
+      </pin>
+
+      <pin>
+        <position>-0.045</position>
+        <tdc>45</tdc>
+      </pin>
+
+      <pin>
+        <position>0.055</position>
+        <tdc>135</tdc>
+      </pin>
+
+      <pin>
+        <position>0.155</position>
+        <tdc>225</tdc>
+      </pin>
+        
+    </bank>
+
+  </crank>
+
+</Engine>
