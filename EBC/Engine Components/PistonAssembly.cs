@@ -137,5 +137,17 @@ namespace EBC.Engine_Components
         {
             return PistonPosition(PistonDisplacementVertical(crankRotationRad - tdcRad - bankAngle), offset, bankAngle);
         }
+        public float GetBottomDeadCenterLength()
+        {
+            return _conRod.Length - _crankSlice.Throw;
+        }
+        public Vector3 GetTDCPosition(float bankAngleRad, float offset)
+        {
+            return new Vector3(
+                MathF.Cos(bankAngleRad) * (_conRod.Length + _crankSlice.Throw),
+                MathF.Sin(bankAngleRad) * (_conRod.Length + _crankSlice.Throw),
+                offset
+                );
+        }
     }
 }

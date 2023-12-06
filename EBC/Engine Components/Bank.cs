@@ -1,12 +1,6 @@
 ﻿using EBC.Physics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using System.Numerics;
-
+using Vector3 = System.Numerics.Vector3;
 namespace EBC.Engine_Components
 {
     internal class Bank
@@ -92,6 +86,46 @@ namespace EBC.Engine_Components
         public int GetCylinderNumber()
         {
             return _cylinders.Length;
+        }
+
+        public float GetCylinderSep(bool _multipleBanks)
+        {
+            if (_multipleBanks == false)
+            {
+                if (_cylinders.Length > 1) return _cylinders[0].position - _cylinders[1].position;
+                else return 0.1f;
+            }
+            else
+            {
+                //find distance between cylinders in bank
+                var nextCylinderSep = _cylinders[0].position - _cylinders[1].position;
+                //find distance between cylinders in opposite banks
+                var opposeCylinderSep = MathF.Sqrt(MathF.Pow(2 * MathF.Sin(_angleRad) * _cylinders[0].pistonAssembly.GetBottomDeadCenterLength(), 2) + MathF.Pow(nextCylinderSep, 2));
+
+                //return smalles
+                return opposeCylinderSep > nextCylinderSep ? nextCylinderSep : opposeCylinderSep;
+            }
+        
+        }
+
+        public  Vector3[] GetCylinderTDCpos()
+        {
+            Vector3[] TDCPoss = new Vector3[_cylinders.Length];
+            for(int i = 0; i < _cylinders.Length; i++)
+            {
+                TDCPoss[i] = _cylinders[i].pistonAssembly.GetTDCPosition(_angleRad, _cylinders[i].position);
+            }
+            return TDCPoss;
+        }
+
+        public float[] GetCylinderAngleRad()
+        {
+            float[] cylAngleRad = new float[GetCylinderNumber()];
+            for(int i = 0; i < _cylinders.Length; i++)
+            {
+                cylAngleRad[i] = _angleRad;
+            }
+            return cylAngleRad;
         }
     }
 }

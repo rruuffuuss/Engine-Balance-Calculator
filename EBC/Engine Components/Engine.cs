@@ -72,17 +72,18 @@ namespace EBC.Engine_Components
         {
             Vector3[,] pos = new Vector3[GetCylinderNumber(), 3];
 
+            var bankStartIndex = 0;
             for (int bankNo = 0; bankNo < banks.Length; bankNo++)
             {
                 var bankPos = banks[bankNo].GetPartPositions(crankRotationRad);
 
                 for(int cylNo = 0; cylNo < bankPos.GetLength(0); cylNo++)
                 {
-                    pos[cylNo * banks.Length + bankNo, 0] = bankPos[cylNo, 0];
-                    pos[cylNo * banks.Length + bankNo, 1] = bankPos[cylNo, 1];
-                    pos[cylNo * banks.Length + bankNo, 2] = bankPos[cylNo, 2];
+                    pos[cylNo + bankStartIndex, 0] = bankPos[cylNo, 0];
+                    pos[cylNo + bankStartIndex, 1] = bankPos[cylNo, 1];
+                    pos[cylNo + bankStartIndex, 2] = bankPos[cylNo, 2];
                 }
-
+                bankStartIndex += banks[bankNo].GetCylinderNumber();
             }
             return pos;
         }
@@ -95,6 +96,35 @@ namespace EBC.Engine_Components
                 total += b.GetCylinderNumber();
             }
             return total;
+        }
+
+        public float GetPistonSeparation()
+        {
+            if(banks.Length == 1) return banks[0].GetCylinderSep(false);
+            else return banks[0].GetCylinderSep(true);
+        }
+
+        public Vector3[] GetCylinderTDCpos()
+        {
+            Vector3[] TDCPoss = new Vector3[GetCylinderNumber()];
+            var t = 0;
+            foreach(Bank b in banks)
+            {
+                b.GetCylinderTDCpos().CopyTo(TDCPoss, t);
+                t += b.GetCylinderNumber();
+            }
+            return TDCPoss;
+        }
+        public float[] GetCylinderAngleRad()
+        {
+            float[] cylAngleRad = new float[GetCylinderNumber()];
+            var t = 0;
+            foreach(Bank b in banks)
+            {
+                b.GetCylinderAngleRad().CopyTo(cylAngleRad, t);
+                t += b.GetCylinderNumber();
+            }
+            return cylAngleRad;
         }
     }
 }
