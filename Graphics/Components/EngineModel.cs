@@ -3,7 +3,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Drawing;
+using System.Reflection.Metadata;
+using System.Diagnostics;
 using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Graphics.Components
 {  
@@ -15,29 +18,36 @@ namespace Graphics.Components
         /// [x][y][0] pos of crank [x][y][1] pos of pin [x][y][2] pos of piston
         /// </summary>
         private Vector3[,,] _engImage;
-        private Vector3[,,] _pistonImage;
+        private Vector3[] _TDCPos;
+
+
+        private float[] _pistonAngles;
+        private float _pistonTextureDiam;
+        private float _pistonTextureTransform;
+        private Vector2 _pistonTextureRectangle;
 
         private Vector2 _origin;
 
         private Vector2[] _assemblyImage;
-        private Vector2 _crank;
-        private Vector2 _pin;
-        private Vector2 _piston;
 
         private float _lineThickness;
         private Texture2D _lineTexture;
+        private Texture2D _pistonTexture;
         private Vector2 _halfLineTextureDims;
         private Texture2D _pointTexture;
         private Vector2 _halfPointTextureDims;
         private Color _lineColour;
         private Color _pointColour;
+        private const float _graphFillAmount = 0.75f; //this changes how much of the graph is filled by the graph
+        private const float _graphFillScale = 0.5f * _graphFillAmount;
 
-        public EngineModel(Engine _engine, int _measurementNo, Vector2 _origin, Vector3 _dimensions, Texture2D _pointTexture, Color _pointColour, Texture2D _lineTexture, Color _lineColour)
+        public EngineModel(Engine _engine, int _measurementNo, Vector2 _origin, Vector3 _dimensions, Texture2D _pointTexture, Color _pointColour, Texture2D _lineTexture, Color _lineColour, Texture2D _pistonTexture)
         {
             this._origin = _origin;
             this._lineTexture = _lineTexture;
             this._lineColour = _lineColour;
             this._pointTexture = _pointTexture;
+            this._pistonTexture = _pistonTexture;
             this._pointColour = _pointColour;
 
             _lineThickness = 4;
@@ -60,6 +70,7 @@ namespace Graphics.Components
 
                     if (MathF.Abs(img[cylNo, 2].X) > largest) largest = MathF.Abs(img[cylNo, 2].X);
                     if (MathF.Abs(img[cylNo, 2].Y) > largest) largest = MathF.Abs(img[cylNo, 2].Y);
+                    if (MathF.Abs(img[cylNo, 2].Z) > largest) largest = MathF.Abs(img[cylNo, 2].Z);
                 }
 
             }
@@ -74,9 +85,9 @@ namespace Graphics.Components
 
             Vector3 scale = new Vector3
             (
-                 (_dimensions.X / 3f) / largest,
-                 -(_dimensions.Y / 3f) / largest,
-                 (_dimensions.Z / 3f) / largest
+                 (_dimensions.X * _graphFillScale) / largest,
+                 -(_dimensions.Y * _graphFillScale) / largest,
+                 (_dimensions.Z * _graphFillScale) / largest
             ); //scale = max dimension / max value
 
             for(int imageNo = 0; imageNo < _engImage.GetLength(0);  imageNo++)
@@ -90,11 +101,41 @@ namespace Graphics.Components
                 }
             }
 
+            _pistonTextureDiam = MathF.Abs(_engine.GetPistonSeparation() * 0.4f * _dimensions.X * _graphFillAmount / largest); 
+
+            var TDCPos_numerics = _engine.GetCylinderTDCpos();
+            _TDCPos = new Vector3[TDCPos_numerics.Length];
+            for(int i = 0; i < _TDCPos.Length; i++)
+            {
+                _TDCPos[i].X = TDCPos_numerics[i].X;
+                _TDCPos[i].Y = TDCPos_numerics[i].Y;
+                _TDCPos[i].Z = TDCPos_numerics[i].Z;
+            }
+
+            _pistonAngles = _engine.GetCylinderAngleRad();
+            var outOfRange = true;
+            while(outOfRange)
+            {
+                outOfRange = false;
+                for(int angleNo = 0; angleNo < _TDCPos.Length; angleNo++)
+                {
+                    if (_pistonAngles[angleNo] < -MathF.PI)
+                    {
+                        _pistonAngles[angleNo] += MathF.Tau;
+                        outOfRange = true;
+                    }
+                    else if (_pistonAngles[angleNo] > MathF.PI) 
+                    { 
+                        _pistonAngles[angleNo] -= MathF.Tau; 
+                        outOfRange = true;
+                    }
+                }
+            }
 
             _assemblyImage = new Vector2[3];
         }
 
-        public void Draw(SpriteBatch _spriteBatch, int _pointNumber, float cosTheta, float sinTheta, float cosAlpha, float sinAlpha)
+        public void Draw(SpriteBatch _spriteBatch, int _pointNumber, float cosTheta, float sinTheta, float cosAlpha, float sinAlpha,float theta, float alpha)
         {
 
             for (int cylNo = 0; cylNo < _engImage.GetLength(1); cylNo++)
@@ -148,11 +189,38 @@ namespace Graphics.Components
 
                     //var a = _assemblyImage[partCoordNo - 1];
                     //var b = Vector2.Distance(_assemblyImage[partCoordNo - 1], _assemblyImage[partCoordNo]);
-                    //var c = MathF.Atan2(_assemblyImage[partCoordNo].Y - _assemblyImage[partCoordNo - 1].Y, _assemblyImage[partCoordNo].X - _assemblyImage[partCoordNo - 1].X);
+                    //var c = MathF.Atan2(_assemblyImage[partCoordNo].Y - _assemblyImage[partCoordNo - 1].Y, _assemblyImage[partCoordNo].X - _assemblyImage[partCoordNo -
 
                     _spriteBatch.Draw(_pointTexture, Vector2.Add(_halfPointTextureDims, _assemblyImage[partCoordNo]), _pointColour);
                 }
 
+
+
+                //_pistonTextureTransform =_pistonTextureDiam * cosAlpha;
+
+                //var rec = new Rectangle((int)(_assemblyImage[2].X - 0.5f * _pistonTextureDiam), (int)(_assemblyImage[2].Y - 0.5f * _pistonTextureTransform), (int)_pistonTextureDiam, (int)_pistonTextureTransform);
+                float cosMu = MathF.Cos(_pistonAngles[cylNo]);
+                float sinMu = MathF.Sin(_pistonAngles[cylNo]);
+                float absSinMu = MathF.Abs(sinMu);
+
+                float width = _pistonTextureDiam* cosMu * cosAlpha;// _pistonTextureDiam * MathF.Min(absSinMu + ((1f- absSinMu)) * (sinAlpha + sinTheta), 1); //* (cosMu + sinAlpha * sinMu * (1f-cosMu));
+                float height = _pistonTextureDiam;// * MathF.Min(1 - (sinAlpha * cosTheta) - (1f - absSinMu) * sinTheta, 1); //_pistonTextureDiam //* cosMu + ((1f-cosMu) / 1f) * (cosTheta - sinAlpha * cosMu);
+                float angle = _pistonAngles[cylNo] > 0? - theta - _pistonAngles[cylNo] * sinAlpha * cosTheta :theta - _pistonAngles[cylNo] * sinAlpha * cosTheta;
+                // piston texxture must rotate with sintheta, needs completely rewriting
+                Debug.WriteLine("S"+sinTheta);
+                Debug.WriteLine("D"+sinAlpha);
+                //Debug.WriteLine("A" + angle);
+                _spriteBatch.Draw(
+                    _pistonTexture,
+                    new Vector2(_assemblyImage[2].X - (MathF.Cos(angle) * width - MathF.Sin(angle) * height) * 0.5f , _assemblyImage[2].Y - (MathF.Cos(angle) * height + MathF.Sin(angle) * width) * 0.5f),
+                    null,
+                    _lineColour,
+                    angle,
+                    Vector2.Zero,
+                    new Vector2(width / _pistonTexture.Width, height / _pistonTexture.Height),
+                    SpriteEffects.None,
+                    0
+                );
                 //var distance = Vector2.Distance(_crank, _pin);
                 //var rotation = MathF.Atan2(_pin.Y - _crank.Y, _pin.X - _crank.X);
 
