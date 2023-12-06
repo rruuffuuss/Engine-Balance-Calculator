@@ -8,12 +8,10 @@ using Graphics.Holders;
 using System;
 using EBC.Engine_Components;
 
-
 namespace Graphics
 {
     public class Game1 : Game
     {
-
         private Force[] _forces;
         private ForceHolder _currentForce;
         private int _forceNumber;
@@ -74,13 +72,12 @@ namespace Graphics
                 moments[i] = forces[i].Moments;
             }
 
-            _graphics = new GraphicsDeviceManager(this);
-
             _componentGraph = new Graph(components, maxComponent, engine);
             _momentGraph = new Graph(moments, maxMoment, engine);
-
             _forces = forces;
 
+
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -110,7 +107,9 @@ namespace Graphics
             //load textures
             Texture2D _pointTexture = Content.Load<Texture2D>("point");
             Texture2D _currentPointTexture = Content.Load<Texture2D>("currentPoint");
+            Texture2D _forceArrowTexture = Content.Load<Texture2D>("upArrow");
             Texture2D _engineLineTexture = Content.Load<Texture2D>("line");
+            Texture2D _enginePistonTexture = Content.Load<Texture2D>("circle");
             _background = Content.Load<Texture2D>("layout");
             //load font
             SpriteFont _DM_Mono = Content.Load<SpriteFont>("DM Mono Regular");
@@ -130,6 +129,7 @@ namespace Graphics
                 _currentPointTexture,
                 _engineLineTexture,
                 _currentPointTexture,
+                _enginePistonTexture,
                 Colour1,
                 Colour3,
                 Colour2,
@@ -142,9 +142,10 @@ namespace Graphics
             _momentGraph.LoadContent
             (
                 _pointTexture,
-                _currentPointTexture,
+                _forceArrowTexture,
                 _engineLineTexture,
                 _currentPointTexture,
+                _enginePistonTexture,
                 Colour3,
                 Colour1,
                 Colour4,
@@ -280,5 +281,6 @@ namespace Graphics
 
             base.Draw(gameTime);
         }
+
     }
 }
