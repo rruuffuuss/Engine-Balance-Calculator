@@ -3,7 +3,8 @@ A calculator to find the direction, magnitude, and moments caused by forces due 
 A wireframe of key components is displayed underneath the graph
 
 _early stage_
-![image](https://github.com/rruuffuuss/Engine-Balance-Calculator/assets/70328797/29c304ec-1d74-4b87-8fd0-eca3a45ab498)
+![image](https://github.com/rruuffuuss/Engine-Balance-Calculator/assets/70328797/0079e6f1-a5f2-47f8-996b-4196b4bbc94a)
+
 
 
 
