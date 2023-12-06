@@ -30,7 +30,9 @@ namespace Graphics.Components
         private Color _pointColor;
         private Color _currentPointColour;
 
+        private const float _graphFillAmount = 0.95f; //this changes how much of the graph is filled by the graph
 
+        private const float _graphFillScale = 0.5f * _graphFillAmount;
         public Graph(Vector3[] _unscaledPoints, float _maxValue, Engine _engine)
         {
             this._unscaledPoints = _unscaledPoints;
@@ -38,7 +40,7 @@ namespace Graphics.Components
             this._engine = _engine;
         }
 
-        public void LoadContent(Texture2D _pointTexture, Texture2D _currentPointTexture, Texture2D _engineLineTexture, Texture2D _enginePointTexture, Color _pointColor, Color _currentPointColour, Color _engineLineColour, Color _enginePointColour, Vector2 _position, Vector3 _dimensions, float _dragSensitivity)
+        public void LoadContent(Texture2D _pointTexture, Texture2D _currentPointTexture, Texture2D _engineLineTexture, Texture2D _enginePointTexture, Texture2D _enginePistonTexture, Color _pointColor, Color _currentPointColour, Color _engineLineColour, Color _enginePointColour, Vector2 _position, Vector3 _dimensions, float _dragSensitivity)
         {
             this._pointTexture = _pointTexture;
             this._currentPointTexture = _currentPointTexture;
@@ -54,9 +56,9 @@ namespace Graphics.Components
 
             Vector3 scale = new Vector3
             (
-                (_dimensions.X / 3f) / _maxValue,
-                -(_dimensions.Y / 3f) / _maxValue,
-                (_dimensions.Z / 3f) / _maxValue
+                (_dimensions.X * _graphFillScale) / _maxValue,
+                -(_dimensions.Y * _graphFillScale) / _maxValue,
+                (_dimensions.Z * _graphFillScale) / _maxValue
             );
 
             
@@ -77,7 +79,7 @@ namespace Graphics.Components
                 _points[i] = Vector3.Multiply(_unscaledPoints[i], scale);
             }
 
-            _engineModel = new EngineModel(_engine, _points.Length, _origin,Vector3.Multiply(_dimensions, new Vector3(0.5f)), _enginePointTexture, _enginePointColour, _engineLineTexture, _engineLineColour);
+            _engineModel = new EngineModel(_engine, _points.Length, _origin, _dimensions, _enginePointTexture, _enginePointColour, _engineLineTexture, _engineLineColour, _enginePistonTexture);
         }
 
 
@@ -108,7 +110,7 @@ namespace Graphics.Components
             float cosAlpha = MathF.Cos(_viewAngle.Y);
             float sinAlpha = MathF.Sin(_viewAngle.Y);
 
-            _engineModel.Draw(_spriteBatch, _pointNumber, cosTheta, sinTheta, cosAlpha, sinAlpha);
+            _engineModel.Draw(_spriteBatch, _pointNumber, cosTheta, sinTheta, cosAlpha, sinAlpha, _viewAngle.X, _viewAngle.Y);
 
             foreach (Vector3 point in _points)
             {
