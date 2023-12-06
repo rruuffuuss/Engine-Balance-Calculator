@@ -43,9 +43,10 @@ namespace EBC.Physics
 
         private static Vector3 calculateMoments( Vector3 components, Vector3 position)
         {
-            return new Vector3(position.Z * components.Y + position.Y * components.Z,
+            return new Vector3( 
                 position.X * components.Z + position.Z * components.X,
-                position.X * components.Y + position.Y * components.Z);
+                position.X * components.Y + position.Y * components.Z,
+                position.Z * components.Y + position.Y * components.Z);
         }
         public static Force AddForces(Force f1, Force f2)
         {

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+UNITS
+LENGTHS- METERS
+MASS- KILOGRAMS
+ANGLES- DEGREES
+-->
+<Engine>
+
+  <name>6i-0 480 240 600 120 360</name>
+
+  <pistonAssembly>
+
+    <piston>
+      <mass>0.5</mass>
+      <offset>0</offset>
+    </piston>
+
+    <conRod>
+      <mass>0</mass>
+      <length>0.2</length>
+      <comLength>0</comLength>
+    </conRod>
+
+    <crankSlice>
+      <mass>0</mass>
+      <!--2.241555 balances force of piston at tdc0-->
+      <throw>0.05</throw>
+      <comLength>0</comLength>
+    </crankSlice>
+
+  </pistonAssembly>
+
+  <crank>
+
+    <bank>
+
+      <angle>0</angle>
+
+      <pin>
+        <position>-0.25</position>
+        <tdc>0</tdc>
+      </pin>
+
+      <pin>
+        <position>0.15</position>
+        <tdc>480</tdc>
+      </pin>
+
+      <pin>
+        <position>0.05</position>
+        <tdc>240</tdc>
+      </pin>
+
+      <pin>
+        <position>-0.05</position>
+        <tdc>600</tdc>
+      </pin>
+
+      <pin>
+        <position>-0.15</position>
+        <tdc>120</tdc>
+      </pin>
+
+      <pin>
+        <position>0.25</position>
+        <tdc>360</tdc>
+      </pin>
+
+    </bank>
+
+  </crank>
+
+</Engine>
